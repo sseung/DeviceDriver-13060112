@@ -1,9 +1,4 @@
 #include "device_driver.h"
-#include <stdexcept>
-
-class ReadFailException : public std::exception {
-
-};
 
 DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 {
@@ -23,6 +18,8 @@ int DeviceDriver::read(long address)
 
 void DeviceDriver::write(long address, int data)
 {
-    // TODO: implement this method
+    if (read(address) != 0xFF) {
+        throw WriteFailException();
+    }
     m_hardware->write(address, (unsigned char)data);
 }
